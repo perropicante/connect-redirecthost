@@ -1,1 +1,1 @@
-module.exports = require('lib/redirectHost.js');
+module.exports = require('./lib/redirectHost.js');
