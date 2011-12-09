@@ -29,7 +29,7 @@ var mockRequest = function(url){
         return this.headers[name.toLowerCase()];
     };
 
-    req.headers['host'] = urlParts.hostname;
+    req.headers['host'] = urlParts.host;
     req.url = (urlParts.pathname || '') + (urlParts.search || '');
 
     return req;
@@ -90,10 +90,18 @@ vows.describe("Domain redirection").addBatch({
             'http://www.example.com/some/path.htm?key1=v1&key2=v2'),
         'redirect avoided on www.example.com': verifyNext(
             'http://www.example.com'),
+        'redirect avoided on www.example.com:80': verifyNext(
+            'http://www.example.com:80'),
         'redirect avoided on www.example.com with path and query': verifyNext(
-            'http://www.example.com//some/path.htm?key1=v1&key2=v2'),
+            'http://www.example.com/some/path.htm?key1=v1&key2=v2'),
         'redirect skipped for localhost': verifyNext(
-            'http://localhost/')
+            'http://localhost/'),
+        'redirect skipped for localhost:3000': verifyNext(
+            'http://localhost:3000/'),
+        'redirect skipped for 127.0.0.1': verifyNext(
+            'http://127.0.0.1/'),
+        'redirect skipped for 127.0.0.1:3000': verifyNext(
+            'http://127.0.0.1:3000/')
     },
     "Redirect from most subdomains to a single domain, except one" : {
         topic : function(){
@@ -116,10 +124,18 @@ vows.describe("Domain redirection").addBatch({
             'http://www.example.com/'),
         'redirect avoided on www.example.com': verifyNext(
             'http://www.example.com'),
+        'redirect avoided on www.example.com:80': verifyNext(
+            'http://www.example.com:80'),
         'redirect avoided on cdn.example.com': verifyNext(
             'http://cdn.example.com'),
         'redirect skipped for localhost': verifyNext(
-            'http://localhost/')
+            'http://localhost/'),
+        'redirect skipped for localhost:3000': verifyNext(
+            'http://localhost:3000/'),
+        'redirect skipped for 127.0.0.1': verifyNext(
+            'http://127.0.0.1/'),
+        'redirect skipped for 127.0.0.1:3000': verifyNext(
+            'http://127.0.0.1:3000/')
     },
     "Redirect from most subdomains to a single domain" : {
         topic : function(){
@@ -139,11 +155,19 @@ vows.describe("Domain redirection").addBatch({
             'http://www.example.com/'),
         'redirect avoided on www.example.com': verifyNext(
             'http://www.example.com'),
+        'redirect avoided on www.example.com:80': verifyNext(
+            'http://www.example.com:80'),
         'redirect avoided on cdn.example.com': verifyNext(
             'http://cdn.example.com'),
         'redirect avoided on origin.example.com': verifyNext(
             'http://origin.example.com'),
         'redirect skipped for localhost': verifyNext(
-            'http://localhost/')
+            'http://localhost/'),
+        'redirect skipped for localhost:3000': verifyNext(
+            'http://localhost:3000/'),
+        'redirect skipped for 127.0.0.1': verifyNext(
+            'http://127.0.0.1/'),
+        'redirect skipped for 127.0.0.1:3000': verifyNext(
+            'http://127.0.0.1:3000/')
     }
 }).export(module);
