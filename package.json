@@ -1,0 +1,19 @@
+{
+  "author": "M Gradek",
+  "name": "connect-redirecthost",
+  "description": "Connect middleware for the Express.js framework that allows redirecting multiple domains to a default one",
+  "version": "0.0.0",
+  "repository": {
+    "url": "git@github.com:perropicante/connect-redirecthost.git"
+  },
+  "main": "index",
+  "engines": {
+    "node": "~0.4.8"
+  },
+  "dependencies": {
+      "underscore" : "1.1.7"
+  },
+  "devDependencies": {
+      "vows": "latest"
+  }
+}
