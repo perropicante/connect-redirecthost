@@ -4,7 +4,7 @@ connect-redirecthost is middleware for the Express.js framework that allows redi
 
 ## Installation
 
-    $ npm install node-force-domain
+    $ npm install connect-redirecthost
 
 ## Quick Start
 
