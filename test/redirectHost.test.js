@@ -14,7 +14,7 @@ var mockResponse = function(){
     res.redirect = function(to){
         this._location = to;
     };
-    res.__defineGetter__("location", function(){
+    res.__defineGetter__('location', function(){
         return this._location;
     });
     return res;
@@ -58,23 +58,23 @@ var verifyNext = function(from){
 
         middleware(req, res, function(){calledNext = true;});
 
-        assert.isTrue(calledNext, 'next() was not called');
+        assert.isTrue(calledNext, 'next() was not called for \'' + from + '\'');
     };
 }
 
-vows.describe("Domain redirection").addBatch({
-    "Throws errors when improperly initialized" : {
+vows.describe('Domain redirection').addBatch({
+    'Throws errors when improperly initialized' : {
         topic : function(){return true},
-        "throws errors when options is undefined": function(ignore){
+        'throws errors when options is undefined': function(ignore){
             assert.throws(function(){factory.redirectHost()}, ReferenceError);
         }
     },
-    "Redirect from many subdomains to single domain" : {
+    'Redirect from many subdomains to single domain' : {
         topic : function(){
-            return factory.redirectHost("www.example.com");
+            return factory.redirectHost('www.example.com');
         },
-        "middleware exists": function(middleware){
-            assert.equal("function", typeof middleware);
+        'middleware exists': function(middleware){
+            assert.equal('function', typeof middleware);
         },
         'redirects from example.com to www.example.com': verifyRedirect(
             'http://example.com/',
@@ -103,15 +103,15 @@ vows.describe("Domain redirection").addBatch({
         'redirect skipped for 127.0.0.1:3000': verifyNext(
             'http://127.0.0.1:3000/')
     },
-    "Redirect from most subdomains to a single domain, except one" : {
+    'Redirect from most subdomains to a single domain, except one' : {
         topic : function(){
             return factory.redirectHost({
-                except:"cdn.example.com",
-                to:"www.example.com"
+                except:'cdn.example.com',
+                to:'www.example.com'
             });
         },
-        "middleware exists": function(middleware){
-            assert.equal("function", typeof middleware);
+        'middleware exists': function(middleware){
+            assert.equal('function', typeof middleware);
         },
         'redirects from example.com to www.example.com': verifyRedirect(
             'http://example.com/',
@@ -137,15 +137,15 @@ vows.describe("Domain redirection").addBatch({
         'redirect skipped for 127.0.0.1:3000': verifyNext(
             'http://127.0.0.1:3000/')
     },
-    "Redirect from most subdomains to a single domain" : {
+    'Redirect from most subdomains to a single domain' : {
         topic : function(){
             return factory.redirectHost({
-                except:["cdn.example.com", "origin.example.com"],
-                to:"www.example.com"
+                except:['cdn.example.com', 'origin.example.com'],
+                to:'www.example.com'
             });
         },
-        "middleware exists": function(middleware){
-            assert.equal("function", typeof middleware);
+        'middleware exists': function(middleware){
+            assert.equal('function', typeof middleware);
         },
         'redirects from example.com to www.example.com': verifyRedirect(
             'http://example.com/',
@@ -153,6 +153,49 @@ vows.describe("Domain redirection").addBatch({
         'redirects from anything.example.com to www.example.com': verifyRedirect(
             'http://anything.example.com/',
             'http://www.example.com/'),
+        'redirect avoided on www.example.com': verifyNext(
+            'http://www.example.com'),
+        'redirect avoided on www.example.com:80': verifyNext(
+            'http://www.example.com:80'),
+        'redirect avoided on cdn.example.com': verifyNext(
+            'http://cdn.example.com'),
+        'redirect avoided on origin.example.com': verifyNext(
+            'http://origin.example.com'),
+        'redirect skipped for localhost': verifyNext(
+            'http://localhost/'),
+        'redirect skipped for localhost:3000': verifyNext(
+            'http://localhost:3000/'),
+        'redirect skipped for 127.0.0.1': verifyNext(
+            'http://127.0.0.1/'),
+        'redirect skipped for 127.0.0.1:3000': verifyNext(
+            'http://127.0.0.1:3000/')
+    },
+    'Redirect from one domain to another with a specific path' : {
+        topic : function(){
+            return factory.redirectHost({
+                changePath: {
+                    'www.example.co.uk': '/uk',
+                    'www.example.ca': function(host, url){return '/ca' + url;}
+                },
+                except:['cdn.example.com', 'origin.example.com'],
+                to:'www.example.com'
+            });
+        },
+        'middleware exists': function(middleware){
+            assert.equal('function', typeof middleware);
+        },
+        'redirects from example.com to www.example.com': verifyRedirect(
+            'http://example.com/',
+            'http://www.example.com/'),
+        'redirects from anything.example.com to www.example.com': verifyRedirect(
+            'http://anything.example.com/',
+            'http://www.example.com/'),
+        'redirect from www.example.co.uk to www.example.com/uk using static path': verifyRedirect(
+            'http://www.example.co.uk/',
+            'http://www.example.com/uk'),
+        'redirect from www.example.ca/hello to www.example.com/ca/hello using path function': verifyRedirect(
+            'http://www.example.ca/hello',
+            'http://www.example.com/ca/hello'),
         'redirect avoided on www.example.com': verifyNext(
             'http://www.example.com'),
         'redirect avoided on www.example.com:80': verifyNext(
