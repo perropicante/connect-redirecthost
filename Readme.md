@@ -45,7 +45,8 @@ the following options can be used, where the path will be set to the associated 
 app.use(require('connect-redirecthost').redirectHost({
     to: 'www.example.com',
     changePath: {'www.example.ca': '/ca', 'www.example.us': '/us'}
-}));```
+}));
+```
 
 You can also specify a function to determine the new path;
 
@@ -56,7 +57,8 @@ app.use(require('connect-redirecthost').redirectHost({
      'www.example.ca': function(host, url){return '/ca' + url;},
      'www.example.us': function(host, url){return '/us' + url;}
     }
-}));```
+}));
+```
 
 
 ## License
