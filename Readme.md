@@ -2,6 +2,8 @@
 
 connect-redirecthost is middleware for the Express.js framework that allows redirecting multiple domains to a default one.
 
+[![Build Status](https://secure.travis-ci.org/perropicante/connect-redirecthost.png)](http://travis-ci.org/perropicante/connect-redirecthost)
+
 ## Installation
 
     $ npm install connect-redirecthost
@@ -63,6 +65,6 @@ app.use(require('connect-redirecthost').redirectHost({
 
 ## License
 
-View the LICENSE file.
+MIT License, see the LICENSE file.
 
 
