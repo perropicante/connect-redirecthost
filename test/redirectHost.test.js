@@ -11,12 +11,18 @@ var vows = require('vows'),
 
 var mockResponse = function(){
     var res = {};
-    res.redirect = function(to){
+
+    res.redirect = function(statusCode, to){
+        this._statusCode = statusCode;
         this._location = to;
     };
+    res.__defineGetter__('statusCode', function(){
+        return this._statusCode;
+    });
     res.__defineGetter__('location', function(){
         return this._location;
     });
+
     return res;
 }
 
@@ -45,8 +51,9 @@ var verifyRedirect = function(from, to){
         var req = mockRequest(from);
 
         middleware(req, res, failNext);
-
+        assert.equal(res.statusCode, 301);
         assert.equal(res.location, to);
+
     };
 }
 
