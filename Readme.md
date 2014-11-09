@@ -62,6 +62,20 @@ app.use(require('connect-redirecthost').redirectHost({
 }));
 ```
 
+### Protocol overrides
+
+By default, the current protocol is preserved when redirecting. Using the `protocol` option forces the redirect to a
+particular protocol. Typical values are `http` and `https`.
+
+```javascript
+app.use(require('connect-redirecthost').redirectHost({
+    to: 'www.example.com',
+    protocol: 'https'
+}));
+```
+
+IMPORTANT! Keep in mind this only sets the protocol when redirecting based on host matches. This will not normalize
+the protocol on all requests. You'll need another module to accomplish that.
 
 ## License
 

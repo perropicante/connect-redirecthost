@@ -85,16 +85,16 @@ vows.describe('Domain redirection').addBatch({
         },
         'redirects from example.com to www.example.com': verifyRedirect(
             'http://example.com/',
-            'http://www.example.com/'),
+            '//www.example.com/'),
         'redirects from anything.example.com to www.example.com': verifyRedirect(
             'http://anything.example.com/',
-            'http://www.example.com/'),
+            '//www.example.com/'),
         'redirect preserves relative path': verifyRedirect(
             'http://example.com/some/path.htm',
-            'http://www.example.com/some/path.htm'),
+            '//www.example.com/some/path.htm'),
         'redirect preserves relative path and search': verifyRedirect(
             'http://example.com/some/path.htm?key1=v1&key2=v2',
-            'http://www.example.com/some/path.htm?key1=v1&key2=v2'),
+            '//www.example.com/some/path.htm?key1=v1&key2=v2'),
         'redirect avoided on www.example.com': verifyNext(
             'http://www.example.com'),
         'redirect avoided on www.example.com:80': verifyNext(
@@ -110,6 +110,74 @@ vows.describe('Domain redirection').addBatch({
         'redirect skipped for 127.0.0.1:3000': verifyNext(
             'http://127.0.0.1:3000/')
     },
+    'Redirect by overriding protocol to http' : {
+        topic : function(){
+            return factory.redirectHost({to: 'www.example.com', protocol: 'http'});
+        },
+        'middleware exists': function(middleware){
+            assert.equal('function', typeof middleware);
+        },
+        'redirects from example.com to www.example.com': verifyRedirect(
+          'http://example.com/',
+          'http://www.example.com/'),
+        'redirects from anything.example.com to www.example.com': verifyRedirect(
+          'http://anything.example.com/',
+          'http://www.example.com/'),
+        'redirect preserves relative path': verifyRedirect(
+          'http://example.com/some/path.htm',
+          'http://www.example.com/some/path.htm'),
+        'redirect preserves relative path and search': verifyRedirect(
+          'http://example.com/some/path.htm?key1=v1&key2=v2',
+          'http://www.example.com/some/path.htm?key1=v1&key2=v2'),
+        'redirect avoided on www.example.com': verifyNext(
+          'http://www.example.com'),
+        'redirect avoided on www.example.com:80': verifyNext(
+          'http://www.example.com:80'),
+        'redirect avoided on www.example.com with path and query': verifyNext(
+          'http://www.example.com/some/path.htm?key1=v1&key2=v2'),
+        'redirect skipped for localhost': verifyNext(
+          'http://localhost/'),
+        'redirect skipped for localhost:3000': verifyNext(
+          'http://localhost:3000/'),
+        'redirect skipped for 127.0.0.1': verifyNext(
+          'http://127.0.0.1/'),
+        'redirect skipped for 127.0.0.1:3000': verifyNext(
+          'http://127.0.0.1:3000/')
+    },
+    'Redirect by overriding protocol to https' : {
+        topic : function(){
+            return factory.redirectHost({to: 'www.example.com', protocol: 'https'});
+        },
+        'middleware exists': function(middleware){
+            assert.equal('function', typeof middleware);
+        },
+        'redirects from example.com to www.example.com': verifyRedirect(
+          'http://example.com/',
+          'https://www.example.com/'),
+        'redirects from anything.example.com to www.example.com': verifyRedirect(
+          'http://anything.example.com/',
+          'https://www.example.com/'),
+        'redirect preserves relative path': verifyRedirect(
+          'http://example.com/some/path.htm',
+          'https://www.example.com/some/path.htm'),
+        'redirect preserves relative path and search': verifyRedirect(
+          'http://example.com/some/path.htm?key1=v1&key2=v2',
+          'https://www.example.com/some/path.htm?key1=v1&key2=v2'),
+        'redirect avoided on www.example.com': verifyNext(
+          'http://www.example.com'),
+        'redirect avoided on www.example.com:80': verifyNext(
+          'http://www.example.com:80'),
+        'redirect avoided on www.example.com with path and query': verifyNext(
+          'http://www.example.com/some/path.htm?key1=v1&key2=v2'),
+        'redirect skipped for localhost': verifyNext(
+          'http://localhost/'),
+        'redirect skipped for localhost:3000': verifyNext(
+          'http://localhost:3000/'),
+        'redirect skipped for 127.0.0.1': verifyNext(
+          'http://127.0.0.1/'),
+        'redirect skipped for 127.0.0.1:3000': verifyNext(
+          'http://127.0.0.1:3000/')
+    },
     'Redirect from most subdomains to a single domain, except one' : {
         topic : function(){
             return factory.redirectHost({
@@ -122,13 +190,13 @@ vows.describe('Domain redirection').addBatch({
         },
         'redirects from example.com to www.example.com': verifyRedirect(
             'http://example.com/',
-            'http://www.example.com/'),
+            '//www.example.com/'),
         'redirects from anything.example.com to www.example.com': verifyRedirect(
             'http://anything.example.com/',
-            'http://www.example.com/'),
+            '//www.example.com/'),
         'redirects from origin.example.com to www.example.com': verifyRedirect(
             'http://origin.example.com/',
-            'http://www.example.com/'),
+            '//www.example.com/'),
         'redirect avoided on www.example.com': verifyNext(
             'http://www.example.com'),
         'redirect avoided on www.example.com:80': verifyNext(
@@ -156,10 +224,10 @@ vows.describe('Domain redirection').addBatch({
         },
         'redirects from example.com to www.example.com': verifyRedirect(
             'http://example.com/',
-            'http://www.example.com/'),
+            '//www.example.com/'),
         'redirects from anything.example.com to www.example.com': verifyRedirect(
             'http://anything.example.com/',
-            'http://www.example.com/'),
+            '//www.example.com/'),
         'redirect avoided on www.example.com': verifyNext(
             'http://www.example.com'),
         'redirect avoided on www.example.com:80': verifyNext(
@@ -193,16 +261,16 @@ vows.describe('Domain redirection').addBatch({
         },
         'redirects from example.com to www.example.com': verifyRedirect(
             'http://example.com/',
-            'http://www.example.com/'),
+            '//www.example.com/'),
         'redirects from anything.example.com to www.example.com': verifyRedirect(
             'http://anything.example.com/',
-            'http://www.example.com/'),
+            '//www.example.com/'),
         'redirect from www.example.co.uk to www.example.com/uk using static path': verifyRedirect(
             'http://www.example.co.uk/',
-            'http://www.example.com/uk'),
+            '//www.example.com/uk'),
         'redirect from www.example.ca/hello to www.example.com/ca/hello using path function': verifyRedirect(
             'http://www.example.ca/hello',
-            'http://www.example.com/ca/hello'),
+            '//www.example.com/ca/hello'),
         'redirect avoided on www.example.com': verifyNext(
             'http://www.example.com'),
         'redirect avoided on www.example.com:80': verifyNext(
