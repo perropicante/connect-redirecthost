@@ -35,7 +35,7 @@ var mockRequest = function(url){
         return this.headers[name.toLowerCase()];
     };
 
-    req.headers['host'] = urlParts.host;
+    req.hostname = urlParts.hostname;
     req.url = (urlParts.pathname || '') + (urlParts.search || '');
 
     return req;
